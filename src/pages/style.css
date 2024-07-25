@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+.Delete:hover {
+  z-index: 01;
+  background-image: linear-gradient(
+    to right,
+    rgb(238, 65, 238) 10%,
+    rgb(250, 176, 5) 25%,
+    rgb(250, 176, 5) 34%,
+    rgb(253, 126, 20) 40%,
+    rgb(253, 126, 20) 55%,
+    rgb(250, 82, 82) 87%,
+    rgb(250, 82, 82) 100%
+  );
+  animation: var(--timing) linear dance6123 infinite;
+  transform: scale(1.1) translateY(-1px);
+}
+@keyframes dance6123 {
+  to {
+    background-position: var(--width);
+  }
+}
+.Update {
+  margin-left: 10px;
+  --width: 100px;
+  --timing: 2s;
+  border: 0;
+  width: var(--width);
+  padding-block: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1em;
+  background: rgb(64, 192, 87);
+  transition: all 0.2s;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.Update:hover {
+  background-image: linear-gradient(
+    to right,
+    rgb(76, 110, 245) 9%,
+    rgb(63, 164, 247) 22%,
+    rgb(3, 226, 255) 35%,
+    rgb(103, 255, 209) 48%,
+    rgb(84, 255, 175) 61%,
+    rgb(87, 255, 151) 74%,
+    rgb(90, 255, 84) 87%,
+    rgba(85, 236, 113, 0.897) 100%
+  );
+  animation: var(--timing) linear dance6123 infinite;
+  transform: scale(1.07) translateY(-1px);
+}
+@keyframes dance6123 {
+  to {
+    background-position: var(--width);
+  }
+}
+.student {
+  font-family: Inter;
+  font-size: 60px;
+  background-color: #fff;
+  margin: 0 auto;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.Add {
+  /* position: fixed !important; */
+  /* margin-left:1410px !important; */
+  position: absolute;
+  color: black;
+  margin-left: 300px;
+  margin-top: -760px;
+  background-color: blue;
+}
+.postsForm {
+  margin-left: 12px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  gap: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px !important;
+}
+.container {
+  background-color: #f5f5f5;
+}
+.login_form {
+  max-width: 2000px;
+  display: flex;
+  margin: 0 auto;
+  padding-top: 100px;
+  text-align: center;
+  padding: 100px 550px;
+  gap: 10px;
+  /* max-width: 1260px; */
+}
+.login_form input {
+  background-color: #fff;
+}
+
+.Table {
+  margin-left: -1%;
+}
