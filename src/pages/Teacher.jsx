@@ -191,7 +191,7 @@ const Teacher = () => {
             onChange={handleSearchTeacher}
           />
           <Button onClick={showModal} type="primary">
-            Add Item
+            Add Teacher
           </Button>
         </Flex>
         <Table
@@ -203,7 +203,14 @@ const Teacher = () => {
           open={isModalOpen}
           onOk={handleSubmit}
           onCancel={handleCancel}>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              paddingTop: "15px",
+            }}>
             <Input
               showCount
               maxLength={20}

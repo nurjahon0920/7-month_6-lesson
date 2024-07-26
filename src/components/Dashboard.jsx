@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState, useEffect } from "react";
 import { Layout, Menu, Badge, Button, theme, ConfigProvider } from "antd";
 import {
@@ -13,31 +12,28 @@ import ListItemText from "@mui/material/ListItemText";
 import PeopleIcon from "@mui/icons-material/People";
 import axios from "axios";
 
-const [items, setItems] = useState([]);
 const { Header, Sider } = Layout;
-
-useEffect(() => {
-  axios
-    .get("http://localhost:3000/users")
-    .then((res) => {
-      setItems(res.data);
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error("There was an error fetching the data!", error);
-    });
-}, []);
-let count = items;
 
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [items, setItems] = useState([]);
   const { defaultAlgorithm, defaultSeed } = theme;
   const { token } = defaultSeed;
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/users")
+      .then((res) => {
+        setItems(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the data!", error);
+      });
+  }, []);
+
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
-    console.log(collapsed);
-    console.log(setCollapsed);
   };
 
   return (
@@ -53,7 +49,7 @@ const Dashboard = () => {
             mode="inline"
             defaultSelectedKeys={["1"]}
             style={{ paddingTop: "50px" }}>
-            <React.Fragment>
+            <>
               <Link to="/teacher" style={{ color: "#F5F5F5" }}>
                 <ListItemButton>
                   <ListItemIcon>
@@ -70,7 +66,7 @@ const Dashboard = () => {
                   <ListItemText primary="Students" />
                 </ListItemButton>
               </Link>
-            </React.Fragment>
+            </>
           </Menu>
         </Sider>
         <Layout>
@@ -80,7 +76,6 @@ const Dashboard = () => {
               padding: 0,
               display: "flex",
               justifyContent: "space-between",
-              // maxWidth: "1679.6px",
               paddingRight: "50px",
               alignItems: "center",
             }}>
@@ -96,7 +91,7 @@ const Dashboard = () => {
               }}
             />
             <Link to="/profile" style={{ paddingTop: "10px" }}>
-              <Badge count={count}>
+              <Badge count={items.length}>
                 <UserOutlined style={{ fontSize: "24px", color: "#1890ff" }} />
               </Badge>
             </Link>

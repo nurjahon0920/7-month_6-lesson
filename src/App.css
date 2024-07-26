@@ -1,6 +1,5 @@
 .fetch_form {
   display: flex;
-  /* flex-direction: row; */
   gap: 10px;
   margin-top: 100px;
 }
@@ -8,14 +7,9 @@
 .Table {
   max-width: 790px;
   text-align: left;
-  /* padding-right: 750px; */
   width: 100%;
 }
 
-/* .Table css-dev-only-do-not-override-1uq9j6g {
-  padding-left: 2000px !important;
-} */
-/* App.css */
 .container {
   display: flex;
 }

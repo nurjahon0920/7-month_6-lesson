@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";
 import axios from "axios";
-import { Button, Flex, Input, Modal, Table, message } from "antd";
+import { Button, Input, Modal, Table, message } from "antd";
+import { useForm, Controller } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 
 const Student = () => {
   const [items, setItems] = useState([]);
+  const { register, control, handleSubmit, reset } = useForm();
   const [searchStudent, setSearchStudent] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [group, setGroup] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
 
@@ -23,16 +23,6 @@ const Student = () => {
       });
   }, []);
 
-  const [Teacher, setTeacher] = useState(items);
-
-  const limit = 2;
-  const page = 1;
-
-  const firstIndex = limit * (page + 1);
-  const lastIndex = limit * page;
-  const paginatedTeachers = Teacher.slice(firstIndex, lastIndex);
-  const pageCount = Math.ceil(paginatedTeachers.length / limit);
-
   const handleSearchStudent = (e) => {
     setSearchStudent(e.target.value.toLowerCase());
   };
@@ -45,57 +35,40 @@ const Student = () => {
     );
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (firstName && lastName && group) {
-      if (editItem) {
-        axios
-          .put(`http://localhost:3000/students/${editItem.id}`, {
-            firstName,
-            lastName,
-            group,
-          })
-          .then((res) => {
-            const updatedItems = items.map((item) =>
-              item.id === editItem.id ? res.data : item
-            );
-            setItems(updatedItems);
-            message.success("Student updated successfully");
-            setEditItem(null);
-          })
-          .catch((error) => {
-            console.error("There was an error updating the Student!", error);
-            message.error("Failed to update Student");
-          });
-      } else {
-        axios
-          .post("http://localhost:3000/students", {
-            firstName,
-            lastName,
-            group,
-          })
-          .then((res) => {
-            setItems([...items, res.data]);
-            message.success("Student added successfully");
-          })
-          .catch((error) => {
-            console.error("There was an error adding the Student!", error);
-            message.error("Failed to add Student");
-          });
-      }
-      setFirstName("");
-      setLastName("");
-      setGroup("");
-      setIsModalOpen(false);
+  const onSubmit = (data) => {
+    if (editItem) {
+      axios
+        .put(`http://localhost:3000/students/${editItem.id}`, data)
+        .then((res) => {
+          const updatedItems = items.map((item) =>
+            item.id === editItem.id ? res.data : item
+          );
+          setItems(updatedItems);
+          message.success("Student updated successfully");
+          setEditItem(null);
+        })
+        .catch((error) => {
+          console.error("There was an error updating the Student!", error);
+          message.error("Failed to update Student");
+        });
     } else {
-      message.error("All fields are required");
+      axios
+        .post("http://localhost:3000/students", data)
+        .then((res) => {
+          setItems([...items, res.data]);
+          message.success("Student added successfully");
+        })
+        .catch((error) => {
+          console.error("There was an error adding the Student!", error);
+          message.error("Failed to add Student");
+        });
     }
+    reset();
+    setIsModalOpen(false);
   };
 
   const updateItem = (item) => {
-    setFirstName(item.firstName);
-    setLastName(item.lastName);
-    setGroup(item.group);
+    reset(item);
     setEditItem(item);
     setIsModalOpen(true);
   };
@@ -115,9 +88,7 @@ const Student = () => {
   };
 
   const showModal = () => {
-    setFirstName("");
-    setLastName("");
-    setGroup("");
+    reset();
     setEditItem(null);
     setIsModalOpen(true);
   };
@@ -175,8 +146,7 @@ const Student = () => {
   return (
     <div style={{ display: "flex" }} className="container">
       <Dashboard />
-      <Flex
-        vertical
+      <div
         style={{
           top: "100px",
           left: "400px",
@@ -184,17 +154,18 @@ const Student = () => {
           flexDirection: "column",
           fontSize: "22px",
           gap: "15px",
+          display: "flex",
         }}>
-        <Flex style={{ gap: "10px" }}>
+        <div style={{ display: "flex", gap: "10px" }}>
           <Input.Search
             placeholder="Search"
             allowClear
             onChange={handleSearchStudent}
           />
           <Button onClick={showModal} type="primary">
-            Add Item
+            Add Student
           </Button>
-        </Flex>
+        </div>
         <Table
           dataSource={filteredData}
           columns={columns}
@@ -202,42 +173,53 @@ const Student = () => {
         <Modal
           title={editItem ? "Edit Student" : "Add Student"}
           open={isModalOpen}
-          onOk={handleSubmit}
+          onOk={handleSubmit(onSubmit)}
           onCancel={handleCancel}>
-          <form onSubmit={handleSubmit}>
-            <Input
-              showCount
-              maxLength={20}
-              type="text"
+          <form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              paddingTop: "25px",
+            }}>
+            <Controller
               name="firstName"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="First Name"
+                  maxLength={20}
+                  required
+                />
+              )}
             />
-            <Input
-              showCount
-              maxLength={20}
-              type="text"
+            <Controller
               name="lastName"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Last Name"
+                  maxLength={20}
+                  required
+                />
+              )}
             />
-            <Input
-              showCount
-              maxLength={20}
-              type="text"
+            <Controller
               name="group"
-              placeholder="Group"
-              value={group}
-              onChange={(e) => setGroup(e.target.value)}
-              required
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input {...field} placeholder="Group" maxLength={20} required />
+              )}
             />
           </form>
+          <DevTool control={control} />
         </Modal>
-      </Flex>
+      </div>
     </div>
   );
 };

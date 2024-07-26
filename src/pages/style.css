@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
-.Delete:hover {
+/* .Delete:hover {
   z-index: 01;
   background-image: linear-gradient(
     to right,
@@ -13,7 +13,7 @@
   );
   animation: var(--timing) linear dance6123 infinite;
   transform: scale(1.1) translateY(-1px);
-}
+} */
 @keyframes dance6123 {
   to {
     background-position: var(--width);
